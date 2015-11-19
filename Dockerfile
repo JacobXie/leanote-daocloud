@@ -14,4 +14,4 @@ RUN go install github.com/revel/cmd/revel
 
 EXPOSE 9000
 
-CMD revel run github.com/JacobXie/leanote prod
+CMD revel run github.com/JacobXie/leanote

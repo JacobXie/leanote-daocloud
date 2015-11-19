@@ -289,7 +289,7 @@ func (this *UserService) GetUserInfoByName(emailOrUsername string) info.User {
 func (this *UserService) UpdateUsername(userId, username string) (bool, string) {
 	//modified by JacobXie
 		if userId == configService.adminUserId{//admin 不能修改用户名
-				return false, "admin is not permitted for midification"
+				return false, "adminUser is not permitted for modifying name"
 		}
 		usernameRaw := username // 原先的, 可能是同一个, 但有大小写
 		username = strings.ToLower(username)

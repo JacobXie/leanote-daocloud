@@ -82,6 +82,7 @@ func Init(url, dbname string) {
 	}
 	if dbname == "" {
 		dbname, _ = config.String("db.dbname")
+		Log("dbname : " + dbname)
 	}
 
 	// get db config from host, port, username, password
@@ -182,25 +183,18 @@ func Init(url, dbname string) {
 		user := info.User{}
 		user.UserId = bson.NewObjectId()
 		user.Email = "admin@leanote.com"
-		user.Verified = true
-		user.Username = "admin"
-		user.UsernameRaw = "admin"
-		user.Pwd = GenPwd("admin123")
+		user.Verified = false
+		user.Username,ok = revel.Config.String("adminUsername")
+		if !ok || user.Username == ""{
+			user.Username = "admin"
+		}
+		user.UsernameRaw = user.Username
+		user.Pwd = GenPwd(user.Username+"123")
 		user.CreatedTime = time.Now()
 		user.Theme = "simple"
 		user.NotebookWidth = 160
 		user.NoteListWidth = 266
 		Insert(Users, user)
-
-		blog_single := info.BlogSingle{}
-		blog_single.SingleId = bson.NewObjectId()
-		blog_single.UserId = user.UserId
-		blog_single.Title = "About Me"
-		blog_single.UrlTitle = "About-Me"
-		blog_single.Content = "<p>Hello,&nbsp;I am Leanote (^_^).</p>"
-		blog_single.CreatedTime = time.Now()
-		blog_single.UpdatedTime = blog_single.CreatedTime
-		Insert(BlogSingles,blog_single)
 
 		//Insert(Configs,& info.Config{ConfigId:bson.NewObjectId(), UserId:user.UserId, Key:"openRegister", ValueStr:"open" })
 		Insert(Configs,& info.Config{ConfigId:bson.NewObjectId(), UserId:user.UserId, Key:"toImageBinPath", ValueStr:"lllllllllll" })
@@ -234,9 +228,6 @@ func Init(url, dbname string) {
 
 		Insert(Configs,& info.Config{ConfigId:bson.NewObjectId(), UserId:user.UserId, Key:"userFilterEmail", ValueStr:"" })
 
-		tag := info.Tag{}
-		tag.UserId = user.UserId
-		Insert(Tags,tag)
 
 		theme_elegant := info.Theme{}
 		theme_elegant.ThemeId = bson.NewObjectId()
@@ -322,6 +313,25 @@ func Init(url, dbname string) {
 		theme_nav_fixed.UpdatedTime = theme_nav_fixed.CreatedTime
 		Insert(Themes,theme_nav_fixed)
 
+
+		blog_single := info.BlogSingle{}
+		blog_single.SingleId = bson.NewObjectId()
+		blog_single.UserId = user.UserId
+		blog_single.Title = "About Me"
+		blog_single.UrlTitle = "About-Me"
+		blog_single.Content = "<p>Hello,&nbsp;I am Leanote (^_^).</p>"
+		blog_single.CreatedTime = time.Now()
+		blog_single.UpdatedTime = blog_single.CreatedTime
+		Insert(BlogSingles,blog_single)
+
+		Insert(Notebooks, & info.Notebook{NotebookId:bson.NewObjectId(), UserId:user.UserId, Seq:-1, Title:"Life", UrlTitle:"life", CreatedTime:time.Now(), UpdatedTime: time.Now()})
+		Insert(Notebooks, & info.Notebook{NotebookId:bson.NewObjectId(), UserId:user.UserId, Seq:-1, Title:"Work", UrlTitle:"work", CreatedTime:time.Now(), UpdatedTime: time.Now()})
+		Insert(Notebooks, & info.Notebook{NotebookId:bson.NewObjectId(), UserId:user.UserId, Seq:-1, Title:"Study", UrlTitle:"study", CreatedTime:time.Now(), UpdatedTime: time.Now()})
+		Insert(Notebooks, & info.Notebook{NotebookId:bson.NewObjectId(), UserId:user.UserId, Seq:-1, Title:"Other", UrlTitle:"other", CreatedTime:time.Now(), UpdatedTime: time.Now()})
+
+		tag := info.Tag{}
+		tag.UserId = user.UserId
+		Insert(Tags,tag)
 
 		token := info.Token{}
 		token.UserId = user.UserId

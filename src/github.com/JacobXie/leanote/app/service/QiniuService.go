@@ -21,6 +21,7 @@ type QiniuService struct {
 func (this *QiniuService) InitQiniu(){
 		config := revel.Config
 		storage_type, ok := config.String("storage.type")
+		L("storage type : " + storage_type)
 		this.isUsed = false
 		if ok && storage_type == "qiniu"{
 			var qiniu_AK string

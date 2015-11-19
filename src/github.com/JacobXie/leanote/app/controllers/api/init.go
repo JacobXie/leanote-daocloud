@@ -32,7 +32,7 @@ var qiniuService *service.QiniuService
 
 var pageSize = 1000
 var defaultSortField = "UpdatedTime"
-var leanoteUserId = "admin" // 不能更改
+//var leanoteUserId = "admin" // 不能更改
 
 // 状态
 const (
