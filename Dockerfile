@@ -18,4 +18,4 @@ RUN go install github.com/revel/cmd/revel
 
 EXPOSE 9000
 
-CMD revel run github.com/Jacobxie/leanote-daocloud daocloud
+CMD revel run github.com/Jacobxie/leanote-daocloud prod
